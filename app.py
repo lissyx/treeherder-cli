@@ -9,7 +9,7 @@ def _flatten_list(a_list):
     return list(itertools.chain.from_iterable(a_list))
 
 def parse_args():
-    command_choices = ('retrigger', 'cancel')
+    command_choices = ('retrigger', 'cancel', 'log')
 
     command_parser = argparse.ArgumentParser(description='Treeherder client')
     command_parser.add_argument('command', type=str, choices=command_choices, help='a command to execute')

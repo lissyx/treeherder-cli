@@ -14,10 +14,19 @@ class Job(Base):
     def retrigger(self):
         self._execute_action(action='retrigger')
 
+    def log(self):
+        print(self._get_joblog())
+
     def _execute_action(self, action):
         rest_resource = 'jobs/{}/{}'.format(self.id, action)
         self.client.execute_request(http_verb='post', rest_resource=rest_resource)
         print('Job {} {} ({}) {}ed'.format(self.group_symbol, self.type_symbol, self.id, action))
+
+    def _get_joblog(self):
+        import requests
+        url = '{}/api/project/{}/job-log-url/?job_id={}'.format(self.client.TREEHERDER_BASE_URL, self.client.repo, self.id)
+        r = requests.get(url)
+        return requests.get(r.json()[0]["url"]).text
 
     @staticmethod
     def from_json(client, json):
